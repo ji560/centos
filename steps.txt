@@ -1,0 +1,26 @@
+Step 1 
+// See step 3 
+yum group install "GNOME Desktop" "Graphical Administration Tools"
+
+Step 2
+sudo systemctl set-default graphical.target
+reboot
+
+Step 3
+// if the internet is not working use the following command
+dhclient
+
+Step 4
+// As root
+yum update -y
+
+Step 5 
+// To use virtualbox guest additions you first need to install compiler and kernel drivers
+yum install -y gcc kernel-devel
+
+Step 6
+Insert guest additions from virtual box and run it as a privileged user.
+
+Step 7 
+// for allowing dhcp allow ONBOOT=yes
+sudo vim /etc/sysconfig/network-scripts/ifcfg-enp0s3
