@@ -1,0 +1,48 @@
+Vagrant.configure("2") do |config|
+  config.vm.define "centos" do |centos|
+    centos.vm.box = "bento/centos-6.9"
+    centos.vm.hostname = 'centos'
+
+    centos.vm.network :private_network, ip: "192.168.56.101"
+    centos.vm.network :forwarded_port, guest: 22, host: 10122, id: "ssh"
+
+    centos.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--memory", 1536]
+      v.customize ["modifyvm", :id, "--name", "centos"]
+    end
+  end
+
+  config.vm.define "windows" do |windows|
+    #windows.vm.box = "StefanScherer/windows_10"
+    #windows.vm.box = "inclusivedesign/windows10-eval-x64"
+    windows.vm.box = "49thsd/winxp-sp1-i386"
+    windows.vm.hostname = 'winblows10'
+    windows.vm.synced_folder ".", "/vagrant", disabled: true
+    windows.vm.network :private_network, ip: "192.168.56.102"
+    windows.vm.network :forwarded_port, guest: 22, host: 10222, id: "ssh"
+   
+    windows.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--memory", 2048]
+      v.customize ["modifyvm", :id, "--name", "windows"]
+    end
+  end
+
+  config.vm.define "kali" do |kali|
+    kali.vm.box = "equilibrium/kali-2018.1"
+    kali.vm.hostname = 'kali'
+
+    kali.vm.network :private_network, ip: "192.168.56.103"
+    kali.vm.network :forwarded_port, guest: 22, host: 10322, id: "ssh"
+
+    kali.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      v.customize ["modifyvm", :id, "--memory", 512]
+      v.customize ["modifyvm", :id, "--name", "kali"]
+    end
+  end
+  config.vm.define "centos", autostart: false
+  config.vm.define "winblows10", autostart: false
+  config.vm.define "kali", autostart: false
+end
